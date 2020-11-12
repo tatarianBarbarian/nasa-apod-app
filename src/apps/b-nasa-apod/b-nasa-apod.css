@@ -1,0 +1,63 @@
+.b-nasa-apod {
+  position: relative;
+  padding: 20px;
+}
+
+.b-nasa-apod__text {
+  color: white;
+}
+
+.b-nasa-apod__title {
+  font-size: 28px;
+}
+
+.b-nasa-apod__description {
+  font-size: 18px;
+}
+
+.b-nasa-apod__button {
+  display: inline-block;
+  background: rgba(255, 255, 255, 20%);
+  border: 1px solid white;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.b-nasa-apod__button:hover {
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 20%);
+}
+
+.b-nasa-apod__button:disabled {
+  pointer-events: none;
+  color: grey;
+  background: rgba(grey, 20%);
+  border: 1px solid grey;
+}
+
+.b-nasa-apod__button:not(:last-child) {
+  margin-right: 8px;
+}
+
+.b-nasa-apod__button_type_prev {
+  /* left: 20px; */
+}
+
+.b-nasa-apod__button_type_next {
+  /* right: 20px; */
+}
+
+.b-nasa-apod__controls {
+  display: flex;
+  padding: 15px 0;
+  flex-wrap: wrap;
+}
+
+@media screen and (min-width: 1024px) {
+  .b-nasa-apod {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+  }
+}

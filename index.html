@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body class="b-page">
+    <div class="b-nasa-apod" id="#app">
+      <div class="b-nasa-apod__column">
+        <div class="b-nasa-apod__controls">
+          <button
+            class="b-nasa-apod__button b-nasa-apod__button_type_prev"
+            id="prev"
+          >
+            Prev
+          </button>
+          <button
+            class="b-nasa-apod__button b-nasa-apod__button_type_next"
+            id="next"
+          >
+            Next
+          </button>
+          <button
+            class="b-nasa-apod__button b-nasa-apod__button_type_next"
+            id="reset"
+          >
+            Reset
+          </button>
+          <button id="random" class="b-nasa-apod__button">Random</button>
+          <label id="caldendar" for="date" class="b-nasa-apod__button">
+            📅
+            <input
+              type="date"
+              id="date"
+              class="b-nasa-apod__datepicker"
+              min="1995-06-20"
+            />
+          </label>
+          <label>
+            <span class="b-nasa-apod__text">hd</span>
+            <input type="checkbox" id="hd" />
+          </label>
+        </div>
+        <div class="b-shower" id="shower"></div>
+      </div>
+      <div class="b-nasa-apod__column">
+        <p class="b-nasa-apod__text b-nasa-apod__date"></p>
+        <p class="b-nasa-apod__text b-nasa-apod__title"></p>
+        <p class="b-nasa-apod__text b-nasa-apod__description"></p>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>

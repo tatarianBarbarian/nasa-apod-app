@@ -1,0 +1,5 @@
+.b-page {
+  height: 100vh;
+  background: linear-gradient(to right, #5f2c82, #49a09d);
+  font-family: "Space Grotesk", sans-serif;
+}

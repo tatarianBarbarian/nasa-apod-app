@@ -1,0 +1,13 @@
+.b-shower {
+  width: 100%;
+}
+
+.b-shower__slide {
+  max-width: 800px;
+  text-align: center;
+}
+
+.b-shower__slide_type_img {
+  width: 100%;
+  height: auto;
+}
