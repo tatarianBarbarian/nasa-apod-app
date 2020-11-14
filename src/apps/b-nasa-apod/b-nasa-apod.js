@@ -3,13 +3,6 @@
   2018-09-15 
 */
 
-/* TODO:
-  kbd / touch events, 
-  errors processing
-  tests
-  favorites?
-*/
-
 import axios from "axios";
 import { BButton } from "../../blocks/b-button/b-button";
 import { BShower } from "../../blocks/b-shower/b-shower";
