@@ -8,8 +8,6 @@
   errors processing
   tests
   favorites?
-  fullscreen
-  responsive controls
 */
 
 import axios from "axios";
@@ -20,27 +18,36 @@ import { format, addDays, subDays } from "date-fns";
 import "./b-nasa-apod.css";
 
 export class BNasaApod {
-  constructor(selector) {
-    this.wrapper = document.querySelector(selector);
-    this.dateEl = document.querySelector(".b-nasa-apod__date");
+  constructor() {
+    this.PROJECT_START_DATE = "1995-06-20";
+
     this.descEl = document.querySelector(".b-nasa-apod__description");
     this.titleEl = document.querySelector(".b-nasa-apod__title");
     this.datePickerEl = document.querySelector(".b-nasa-apod__datepicker");
     this.hdCheckboxEl = document.querySelector("#hd");
+    this.fullscreenLink = document.querySelector("#fullscreen_link");
     this.shouldShowHdPics = false;
 
     this.prevBtn = new BButton("#prev");
     this.nextBtn = new BButton("#next");
     this.randomBtn = new BButton("#random");
     this.resetBtn = new BButton("#reset");
-    this.calendarBtn = new BButton("#caldendar");
     this.shower = new BShower("#shower");
     this.today = null;
-    this.currentDate = null;
+    this._currentDate = null;
   }
 
-  get formattedDay() {
-    return format(this.currentDate, "yyyy-MM-dd");
+  set curDate(value) {
+    this._currentDate = value;
+    this.datePickerEl.value = this.formatDate(value);
+  }
+
+  get curDate() {
+    return this._currentDate;
+  }
+
+  get formattedCurrentDay() {
+    return this.formatDate(this._currentDate);
   }
 
   formatDate(rawDate) {
@@ -66,7 +73,7 @@ export class BNasaApod {
         : Math.round(Math.random() * 30);
     const rawDate = new Date(year, month, day);
 
-    this.currentDate = rawDate;
+    this.curDate = rawDate;
 
     return this.formatDate(rawDate);
   }
@@ -83,33 +90,30 @@ export class BNasaApod {
     });
 
     this.resetBtn.onClick(() => {
-      this.currentDate = this.today;
-      this.changePicture(this.formattedDay);
+      this.curDate = this.today;
+      this.changePicture();
     });
 
     this.randomBtn.onClick(() => {
       this.changePicture(this.getRandomDate());
     });
 
-    this.datePickerEl.addEventListener("change", ({ target }) => {
+    this.datePickerEl.addEventListener("input", ({ target }) => {
       const dateRegex = /\d\d\d\d-\d\d-\d\d/;
       const isDateCorrect =
         dateRegex.test(target.value) &&
-        new Date(target.value) >= new Date("1995-06-20") &&
+        new Date(target.value) >= new Date(this.PROJECT_START_DATE) &&
         new Date(target.value) <= this.today;
 
       if (isDateCorrect) {
-        this.currentDate = new Date(target.value);
+        this.curDate = new Date(target.value);
         this.changePicture(target.value);
       }
     });
 
-    this.calendarBtn.onClick(() => {
-      this.datePickerEl.click();
-    });
-
-    this.hdCheckboxEl.addEventListener("click", ({ target }) => {
+    this.hdCheckboxEl.addEventListener("change", ({ target }) => {
       this.shouldShowHdPics = target.checked;
+      this.changePicture(this.formattedCurrentDay);
     });
   }
 
@@ -125,7 +129,6 @@ export class BNasaApod {
   }
 
   updateInfo({ date, title, explanation, copyright = "" }) {
-    this.dateEl.textContent = date;
     this.titleEl.textContent = title;
     this.descEl.innerText =
       explanation +
@@ -136,38 +139,41 @@ export class BNasaApod {
 
   async changePicture(date = "") {
     const data = await this.getPictureData(date);
+    const {date: picDate, url, hdurl, media_type} = data;
 
     if (!this.today) {
-      this.today = new Date(data.date);
-      this.currentDate = new Date(data.date);
+      this.today = new Date(picDate);
+      this.curDate = new Date(picDate);
     }
 
-    this.formatDate(this.today) === data.date
+    this.formatDate(this.today) === picDate
       ? this.nextBtn.disable()
       : this.nextBtn.enable();
 
-    this.formatDate(this.currentDate) === "1995-06-20"
+    this.formatDate(this.curDate) === this.PROJECT_START_DATE
       ? this.prevBtn.disable()
       : this.prevBtn.enable();
 
-    if (this.shouldShowHdPics && data.hdurl) {
-      this.shower.changeSlide(data.media_type, data.hdurl);
+    if (this.shouldShowHdPics && hdurl) {
+      this.shower.changeSlide(media_type, hdurl);
+      this.fullscreenLink.setAttribute('href', data.hdurl);
     } else {
-      this.shower.changeSlide(data.media_type, data.url);
+      this.shower.changeSlide(media_type, url);
+      this.fullscreenLink.setAttribute('href', url);
     }
 
     this.updateInfo(data);
   }
 
   getNextDay() {
-    this.currentDate = addDays(this.currentDate, 1);
+    this.curDate = addDays(this.curDate, 1);
 
-    return this.formattedDay;
+    return this.formattedCurrentDay;
   }
 
   getPrevDay() {
-    this.currentDate = subDays(this.currentDate, 1);
+    this.curDate = subDays(this.curDate, 1);
 
-    return this.formattedDay;
+    return this.formattedCurrentDay;
   }
 }
