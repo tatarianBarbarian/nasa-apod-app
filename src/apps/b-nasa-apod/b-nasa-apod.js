@@ -110,11 +110,11 @@ export class BNasaApod {
     });
   }
 
-  async getPictureData(date = "") {
+  async getPictureData(date) {
     const { data } = await axios.get("https://api.nasa.gov/planetary/apod", {
       params: {
         api_key: "1stq95d2ZMp5pEfn0giUmYPlZLv7genwK3BnFnad",
-        date
+        date: date || this.formatDate(subDays(new Date(), 1))
       }
     });
 
