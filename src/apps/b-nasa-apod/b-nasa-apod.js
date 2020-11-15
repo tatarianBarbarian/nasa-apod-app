@@ -110,15 +110,30 @@ export class BNasaApod {
     });
   }
 
-  async getPictureData(date) {
-    const { data } = await axios.get("https://api.nasa.gov/planetary/apod", {
-      params: {
-        api_key: "1stq95d2ZMp5pEfn0giUmYPlZLv7genwK3BnFnad",
-        date: date || this.formatDate(subDays(new Date(), 1))
+  async getPictureData(date = '') {
+    try {
+      const { data } = await axios.get("https://api.nasa.gov/planetary/apod", {
+        params: {
+          api_key: "1stq95d2ZMp5pEfn0giUmYPlZLv7genwK3BnFnad",
+          date: date
+        }
+      });
+      
+      return data;
+    } catch(err) {
+      if (err.response.data.msg && err.response.data.msg.includes('No data available for date')) {
+        const { data } = await axios.get("https://api.nasa.gov/planetary/apod", {
+          params: {
+            api_key: "1stq95d2ZMp5pEfn0giUmYPlZLv7genwK3BnFnad",
+            date: this.formatDate(subDays(new Date(), 1))
+          }
+        });
+        
+        return data;
+      } else {
+        throw new Error(err);
       }
-    });
-
-    return data;
+    }
   }
 
   updateInfo({ date, title, explanation, copyright = "" }) {
