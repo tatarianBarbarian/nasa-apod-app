@@ -4,7 +4,6 @@ import "./blocks/b-page/b-page";
 import { BNasaApod } from "./apps/b-nasa-apod/b-nasa-apod";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const mountingPointEl = document.querySelector('#app');
     const appHtml = `
         <div class="b-nasa-apod">
             <div class="b-nasa-apod__controls">
@@ -39,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="b-nasa-apod__text">hd</span>
                 <input type="checkbox" id="hd" />
             </label>
-            <a href="#" id="fullscreen_link" class="b-nasa-apod__link" target="_blank">Open in a new tab</a>
+            <a href="#" id="fullscreen_link" class="b-nasa-apod__link" target="_blank">Open in a new tab</a>&nbsp;&nbsp;
+            <a href="https://github.com/tatarianBarbarian/nasa-apod-app" class="b-nasa-apod__link" target="_blank">Source code</a>
             </div>
             <div class="b-nasa-apod__inner">
             <div class="b-nasa-apod__column">
